@@ -38,7 +38,7 @@ void android_printf(int level, char *format, ...);
 
 #define wpa_printf(level, ...) \
         do {                                            \
-            if ((level) >= MSG_DEBUG) {                  \
+            if ((level) > MSG_DEBUG) {                  \
                 android_printf((level), __VA_ARGS__);   \
             }                                           \
         } while (0)
