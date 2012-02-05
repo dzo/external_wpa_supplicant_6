@@ -338,8 +338,9 @@ wpa_supplicant_ctrl_iface_init(struct wpa_supplicant *wpa_s)
 	}
 
 	if (gid_set && chown(dir, -1, gid) < 0) {
-		perror("chown[ctrl_interface]");
-		goto fail;
+		 wpa_printf(MSG_ERROR, "CTRL: chown[ctrl_interface]: %s",
+                           strerror(errno));
+//		goto fail;
 	}
 
 	/* Make sure the group can enter and read the directory */
@@ -347,7 +348,7 @@ wpa_supplicant_ctrl_iface_init(struct wpa_supplicant *wpa_s)
 	    chmod(dir, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP) < 0) {
 		wpa_printf(MSG_ERROR, "CTRL: chmod[ctrl_interface]: %s",
 			   strerror(errno));
-		goto fail;
+//		goto fail;
 	}
 
 	if (os_strlen(dir) + 1 + os_strlen(wpa_s->ifname) >=
@@ -358,7 +359,8 @@ wpa_supplicant_ctrl_iface_init(struct wpa_supplicant *wpa_s)
 
 	priv->sock = socket(PF_UNIX, SOCK_DGRAM, 0);
 	if (priv->sock < 0) {
-		perror("socket(PF_UNIX)");
+		 wpa_printf(MSG_ERROR, "CTRL: socket(PF_UNIX): %s",
+                           strerror(errno));
 		goto fail;
 	}
 
